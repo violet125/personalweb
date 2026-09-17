@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人主页 | 上海杉达学院 · 软件工程</title>
+    <style>
+        /* ========== 基础重置 ========== */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        :root {
+            --bg: #000000;
+            --surface: #111111;
+            --text: #ffffff;
+            --text-muted: #a3a3a3;
+            --border: #262626;
+            --primary: #60a5fa;
+            --primary-hover: #93c5fd;
+            --accent: #22d3ee;
+            --code-bg: #1a1a1a;
+        }
+
+        body.dark {
+            --bg: #000000;
+            --surface: #111111;
+            --text: #ffffff;
+            --text-muted: #a3a3a3;
+            --border: #262626;
+            --primary: #60a5fa;
+            --primary-hover: #93c5fd;
+            --accent: #22d3ee;
+            --code-bg: #1a1a1a;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+                "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            color: var(--text);
+            background-color: var(--bg);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        section {
+            padding: 64px 0;
+        }
+
+        section + section {
+            border-top: 1px solid var(--border);
+        }
+
+        .section-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 8px;
+            position: relative;
+            padding-left: 14px;
+        }
+
+        .section-title::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 8px;
+            bottom: 8px;
+            width: 4px;
+            border-radius: 2px;
+            background: linear-gradient(180deg, var(--primary), var(--accent));
+        }
+
+        .section-subtitle {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-bottom: 32px;
+            padding-left: 14px;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+
+        .placeholder {
+            background: linear-gradient(90deg, #f3f4f6 0%, #e5e7eb 50%, #f3f4f6 100%);
+            background-size: 200% 100%;
+            color: #9ca3af;
+            border-radius: 4px;
+            padding: 2px 8px;
+            display: inline-block;
+            animation: shimmer 2s infinite linear;
+            font-style: italic;
+        }
+        body.dark .placeholder {
+            background: linear-gradient(90deg, #1f2937 0%, #334155 50%, #1f2937 100%);
+            background-size: 200% 100%;
+            color: #64748b;
+        }
+        .placeholder-block {
+            background: #f3f4f6;
+            border: 2px dashed #d1d5db;
+            border-radius: 8px;
+            color: #9ca3af;
+            padding: 20px;
+            text-align: center;
+            font-style: italic;
+        }
+        body.dark .placeholder-block {
+            background: #111827;
+            border-color: #1f2937;
+            color: #64748b;
+        }
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .navbar {
+            position: sticky;
+            top: 0;
+            background: color-mix(in srgb, var(--surface) 85%, transparent);
+            backdrop-filter: saturate(180%) blur(12px);
+            -webkit-backdrop-filter: saturate(180%) blur(12px);
+            border-bottom: 1px solid var(--border);
+            z-index: 100;
+            transition: background-color 0.4s ease, border-color 0.4s ease;
+        }
+        .nav-inner {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 14px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .nav-logo {
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--text);
+        }
+        .nav-logo span {
+            color: var(--primary);
+        }
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+        .nav-links {
+            display: flex;
+            gap: 24px;
+            list-style: none;
+        }
+        .nav-links a {
+            font-size: 14px;
+            color: var(--text-muted);
+            transition: color 0.2s;
+            position: relative;
+        }
+        .nav-links a::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: -6px;
+            height: 2px;
+            background: var(--primary);
+            border-radius: 1px;
+            transform: scaleX(0);
+            transform-origin: center;
+            transition: transform 0.25s ease;
+        }
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        .nav-links a:hover::after {
+            transform: scaleX(1);
+        }
+
+        .theme-toggle {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--text);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            transition: all 0.2s;
+        }
+        .theme-toggle:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: rotate(20deg);
+        }
+
+        .hero {
+            background: #000000;
+            padding: 96px 0 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        body.dark .hero {
+            background: #000000;
+        }
+        .hero::before, .hero::after {
+            content: "";
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.4;
+            pointer-events: none;
+        }
+        .hero::before {
+            width: 240px;
+            height: 240px;
+            background: #1e3a8a;
+            top: -80px;
+            left: -80px;
+            animation: float 9s ease-in-out infinite;
+        }
+        .hero::after {
+            width: 280px;
+            height: 280px;
+            background: #155e75;
+            bottom: -100px;
+            right: -80px;
+            animation: float 11s ease-in-out infinite reverse;
+        }
+        body.dark .hero::before { background: #1e40af; opacity: 0.5; }
+        body.dark .hero::after { background: #0e7490; opacity: 0.5; }
+
+        .hero-watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: clamp(160px, 28vw, 320px);
+            font-weight: 800;
+            letter-spacing: 0.15em;
+            white-space: nowrap;
+            color: rgba(255, 255, 255, 0.06);
+            filter: blur(2px);
+            pointer-events: none;
+            user-select: none;
+            z-index: 0;
+            animation: watermark-drift 18s ease-in-out infinite;
+        }
+        body.dark .hero-watermark {
+            color: rgba(255, 255, 255, 0.06);
+        }
+        @keyframes watermark-drift {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-48%, -52%) scale(1.05); }
+        }
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(20px, -30px) scale(1.05); }
+        }
+
+        .avatar {
+            width: 128px;
+            height: 128px;
+            border-radius: 50%;
+            background: var(--surface);
+            border: 4px solid var(--surface);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.15);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: #9ca3af;
+            overflow: hidden;
+            position: relative;
+            animation: avatar-bob 5s ease-in-out infinite;
+        }
+        @keyframes avatar-bob {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hero-layout {
+            display: flex;
+            align-items: center;
+            gap: 56px;
+            max-width: 760px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        .hero-avatar {
+            flex-shrink: 0;
+            position: relative;
+        }
+        .hero-avatar::after {
+            content: "";
+            position: absolute;
+            inset: -8px;
+            border-radius: 50%;
+            border: 2px dashed var(--border);
+            animation: spin 24s linear infinite;
+            pointer-events: none;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .hero-content {
+            flex: 1;
+            min-width: 0;
+            text-align: left;
+        }
+        .hero-name {
+            font-size: 36px;
+            font-weight: 800;
+            color: var(--text);
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
+        .hero-tags {
+            display: inline-flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        .tag {
+            background: var(--surface);
+            color: var(--primary);
+            font-size: 13px;
+            padding: 4px 12px;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            transition: all 0.2s;
+        }
+        .tag-strong {
+            font-size: 15px;
+            background: #ffffff;
+            color: #000000;
+            font-weight: 600;
+            padding: 6px 14px;
+        }
+        body.dark .tag-strong {
+            background: #ffffff;
+            color: #000000;
+        }
+        .tag:hover {
+            transform: translateY(-2px);
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+        }
+        .hero-slogan {
+            color: var(--text-muted);
+            font-size: 16px;
+            max-width: 600px;
+            margin: 0 auto 32px;
+            min-height: 28px;
+        }
+        .typewriter-cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1.1em;
+            background: var(--primary);
+            margin-left: 2px;
+            vertical-align: text-bottom;
+            animation: blink 0.8s steps(2, start) infinite;
+        }
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+        .hero-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            position: relative;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.25s ease;
+            cursor: pointer;
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-primary {
+            background: var(--primary);
+            color: #ffffff;
+            box-shadow: 0 4px 14px rgba(59, 130, 246, 0.25);
+        }
+        .btn-primary::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(120deg, transparent 30%, rgba(255, 255, 255, 0.35) 50%, transparent 70%);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+        .btn-primary:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+        }
+        .btn-primary:hover::before {
+            transform: translateX(100%);
+        }
+        .btn-ghost {
+            background: var(--surface);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+        .btn-ghost:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 28px;
+        }
+        .timeline::before {
+            content: "";
+            position: absolute;
+            left: 8px;
+            top: 6px;
+            bottom: 6px;
+            width: 2px;
+            background: var(--border);
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 28px;
+            background: var(--surface);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            transition: all 0.25s ease;
+        }
+        .timeline-item:hover {
+            border-color: var(--primary);
+            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.06);
+            transform: translateX(4px);
+        }
+        body.dark .timeline-item:hover {
+            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.4);
+        }
+        .timeline-item::before {
+            content: "";
+            position: absolute;
+            left: -24px;
+            top: 24px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--surface);
+            border: 3px solid var(--primary);
+            box-shadow: 0 0 0 4px var(--bg);
+            transition: transform 0.2s ease;
+        }
+        .timeline-item:hover::before {
+            transform: scale(1.25);
+        }
+        .timeline-date {
+            display: inline-block;
+            font-size: 12px;
+            color: var(--primary);
+            background: color-mix(in srgb, var(--primary) 12%, transparent);
+            padding: 3px 10px;
+            border-radius: 999px;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        .timeline-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+        .timeline-subtitle {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+        .timeline-desc {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+
+        .skill-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+        }
+        .skill-card {
+            background: var(--surface);
+            padding: 22px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            transition: all 0.25s ease;
+        }
+        .skill-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
+        }
+        body.dark .skill-card:hover {
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.4);
+        }
+        .skill-card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .skill-card-title::before {
+            content: "";
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--primary);
+            transition: transform 0.2s ease;
+        }
+        .skill-card:hover .skill-card-title::before {
+            transform: scale(1.5);
+        }
+        .skill-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .skill-chip {
+            font-size: 13px;
+            color: var(--text-muted);
+            background: var(--code-bg);
+            padding: 4px 10px;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+        .skill-chip:hover {
+            background: color-mix(in srgb, var(--primary) 15%, transparent);
+            color: var(--primary);
+            transform: translateY(-1px);
+        }
+
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        .project-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 22px;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+        .project-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.35s ease;
+        }
+        .project-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-6px);
+            box-shadow: 0 14px 32px rgba(0, 0, 0, 0.08);
+        }
+        .project-card:hover::before {
+            transform: scaleX(1);
+        }
+        body.dark .project-card:hover {
+            box-shadow: 0 14px 32px rgba(0, 0, 0, 0.5);
+        }
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+        .project-title {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--text);
+        }
+        .project-status {
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 999px;
+            background: #dcfce7;
+            color: #15803d;
+            font-weight: 500;
+        }
+        .project-desc {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 14px;
+            flex: 1;
+        }
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .project-tech span {
+            font-size: 12px;
+            background: var(--code-bg);
+            color: var(--text-muted);
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+
+        .hobby-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .hobby-chip {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 8px 16px;
+            border-radius: 999px;
+            font-size: 14px;
+            transition: all 0.25s ease;
+            cursor: default;
+        }
+        .hobby-chip:hover {
+            background: var(--primary);
+            color: #ffffff;
+            border-color: var(--primary);
+            transform: scale(1.06) rotate(-2deg);
+        }
+
+        .contact-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+        }
+        .contact-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 18px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            transition: all 0.25s ease;
+        }
+        .contact-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 22px rgba(0, 0, 0, 0.06);
+        }
+        body.dark .contact-card:hover {
+            box-shadow: 0 10px 22px rgba(0, 0, 0, 0.4);
+        }
+        .contact-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background: color-mix(in srgb, var(--primary) 12%, transparent);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+            transition: transform 0.3s ease;
+        }
+        .contact-card:hover .contact-icon {
+            transform: rotate(-10deg) scale(1.1);
+        }
+        .contact-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .contact-label {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        .contact-value {
+            font-size: 14px;
+            color: var(--text);
+            font-weight: 500;
+            word-break: break-all;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 32px 24px;
+            color: var(--text-muted);
+            font-size: 13px;
+            border-top: 1px solid var(--border);
+        }
+        .footer a {
+            color: var(--primary);
+        }
+
+        @media (max-width: 640px) {
+            .hero { padding: 64px 0 56px; }
+            .hero-name { font-size: 28px; }
+            section { padding: 48px 0; }
+            .section-title { font-size: 22px; }
+            .nav-links { display: none; }
+            .container { padding: 0 20px; }
+            .hero-layout {
+                flex-direction: column;
+                gap: 24px;
+                text-align: center;
+            }
+            .hero-content {
+                text-align: center;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            .hero-avatar::after { inset: -6px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.001ms !important;
+                transition-duration: 0.001ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-inner">
+        <div class="nav-logo">PORTFOLIO<span>.DEV</span></div>
+        <div class="nav-right">
+            <ul class="nav-links">
+                <li><a href="#education">教育</a></li>
+                <li><a href="#skills">技能</a></li>
+                <li><a href="#hobbies">兴趣</a></li>
+                <li><a href="#contact">联系</a></li>
+            </ul>
+            <button class="theme-toggle" id="themeToggle" aria-label="切换主题">🌙</button>
+        </div>
+    </div>
+</nav>
+
+<header class="hero">
+    <div class="hero-watermark" aria-hidden="true">刘洁</div>
+
+    <div class="container">
+        <div class="hero-layout">
+            <div class="hero-avatar">
+                <div class="avatar">
+                    <img src="avatar.jpg" alt="刘洁的头像">
+                </div>
+            </div>
+
+            <div class="hero-content">
+                <h1 class="tag tag-strong">刘洁</h1>
+
+                <div class="hero-tags">
+                    <span class="tag tag-strong">🎓 上海杉达学院</span>
+                    <span class="tag tag-strong">💻 软件工程 · 2025级</span>
+                </div>
+
+                <div class="hero-actions">
+                    <a href="#contact" class="btn btn-primary">📩 联系我</a>
+                    <a href="#skills" class="btn btn-ghost">📂 查看技能</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section id="education">
+    <div class="container">
+        <h2 class="section-title reveal">教育背景</h2>
+        <p class="section-subtitle reveal">Education</p>
+
+        <div class="timeline">
+            <div class="timeline-item reveal">
+                <span class="timeline-date">2025.09 — 至今</span>
+                <div class="timeline-title">上海杉达学院 · 软件工程</div>
+                <div class="timeline-subtitle">本科 · 在读</div>
+                <div class="timeline-desc">
+                    <span class="placeholder">
+                        [ 主修课程：数据结构、操作系统、计算机网络、数据库原理、软件工程导论……<br>
+                        排名 / GPA：（如适用）<br>
+                        获奖学金：（如适用） ]
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="skills">
+    <div class="container">
+        <h2 class="section-title reveal">专业技能</h2>
+        <p class="section-subtitle reveal">Skills</p>
+
+        <div class="skill-grid">
+            <div class="skill-card reveal reveal-delay-1">
+                <div class="skill-card-title">编程语言</div>
+                <div class="skill-list">
+                    <span class="skill-chip placeholder">C / C++</span>
+                    <span class="skill-chip placeholder">Java</span>
+                    <span class="skill-chip placeholder">Python</span>
+                    <span class="skill-chip placeholder">JavaScript</span>
+                </div>
+            </div>
+
+            <div class="skill-card reveal reveal-delay-2">
+                <div class="skill-card-title">工具 & 其他</div>
+                <div class="skill-list">
+                    <span class="skill-chip placeholder">Git</span>
+                    <span class="skill-chip placeholder">VS Code</span>
+                    <span class="skill-chip placeholder">Linux</span>
+                    <span class="skill-chip placeholder">Docker</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="hobbies">
+    <div class="container">
+        <h2 class="section-title reveal">兴趣爱好</h2>
+        <p class="section-subtitle reveal">Hobbies</p>
+
+        <div class="hobby-grid">
+            <span class="hobby-chip placeholder reveal reveal-delay-1">[ 阅读 ]</span>
+            <span class="hobby-chip placeholder reveal reveal-delay-1">[ 摄影 ]</span>
+            <span class="hobby-chip placeholder reveal reveal-delay-2">[ 音乐 ]</span>
+            <span class="hobby-chip placeholder reveal reveal-delay-2">[ 旅行 ]</span>
+            <span class="hobby-chip placeholder reveal reveal-delay-3">[ 游戏 ]</span>
+            <span class="hobby-chip placeholder reveal reveal-delay-3">[ 写代码 ]</span>
+        </div>
+    </div>
+</section>
+
+<section id="contact">
+    <div class="container">
+        <h2 class="section-title reveal">联系方式</h2>
+        <p class="section-subtitle reveal">Get in touch</p>
+
+        <div class="contact-list">
+            <div class="contact-card reveal reveal-delay-1">
+                <div class="contact-icon">✉️</div>
+                <div class="contact-info">
+                    <div class="contact-label">邮箱</div>
+                    <div class="contact-value">3246450736@qq.com</div>
+                </div>
+            </div>
+
+            <div class="contact-card reveal reveal-delay-2">
+                <div class="contact-icon">💬</div>
+                <div class="contact-info">
+                    <div class="contact-label">微信</div>
+                    <div class="contact-value">ljiiie061125</div>
+                </div>
+            </div>
+
+            <div class="contact-card reveal reveal-delay-3">
+                <div class="contact-icon">🐙</div>
+                <div class="contact-info">
+                    <div class="contact-label">GitHub</div>
+                    <div class="contact-value">violet125</div>
+                </div>
+            </div>
+
+            <div class="contact-card reveal reveal-delay-1">
+                <div class="contact-icon">📱</div>
+                <div class="contact-info">
+                    <div class="contact-label">手机</div>
+                    <div class="contact-value">19138223396</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer class="footer">
+    <p>© 刘洁 · 上海杉达学院 · 软件工程 · 2025 级</p>
+    <p style="margin-top: 6px; font-size: 12px;">本页为个人主页模板 · 替换占位符 <span class="placeholder" style="font-size: 11px;">[ 内容 ]</span> 即可使用</p>
+</footer>
+
+<script>
+    /* ========== 1. 滚动渐入动画（IntersectionObserver） ========== */
+    const revealEls = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                io.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.12, rootMargin: '0px 0px -50px 0px' });
+    revealEls.forEach(el => io.observe(el));
+
+    /* ========== 2. 主题切换（localStorage 持久化） ========== */
+    const themeToggle = document.getElementById('themeToggle');
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+        document.body.classList.add('dark');
+        themeToggle.textContent = '☀️';
+    }
+    themeToggle.addEventListener('click', () => {
+        const isDark = document.body.classList.toggle('dark');
+        themeToggle.textContent = isDark ? '☀️' : '🌙';
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    });
+
+    /* ========== 3. 卡片 hover 微动效（鼠标光晕） ========== */
+    document.querySelectorAll('.btn, .skill-card, .project-card, .contact-card, .hobby-chip, .timeline-item').forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = ((e.clientX - rect.left) / rect.width) * 100;
+            const y = ((e.clientY - rect.top) / rect.height) * 100;
+            card.style.setProperty('--mx', x + '%');
+            card.style.setProperty('--my', y + '%');
+        });
+    });
+</script>
+
+</body>
+</html>
