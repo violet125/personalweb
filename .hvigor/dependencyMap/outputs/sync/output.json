@@ -1,0 +1,182 @@
+{
+  "version": 1,
+  "ohos-module-entry": {
+    "SELECT_TARGET": "default",
+    "MODULE_BUILD_DIR": "D:\\GreenSort\\entry\\build",
+    "TARGETS": {
+      "default": {
+        "SOURCE_ROOT": "D:\\GreenSort\\entry\\src\\main",
+        "RESOURCES_PATH": [
+          "D:\\GreenSort\\entry\\src\\main\\resources"
+        ],
+        "BUILD_PATH": {
+          "OUTPUT_PATH": "D:\\GreenSort\\entry\\build\\default\\outputs\\default",
+          "INTERMEDIA_PATH": "D:\\GreenSort\\entry\\build\\default\\intermediates",
+          "JS_ASSETS_PATH": "D:\\GreenSort\\entry\\build\\default\\intermediates\\loader_out\\default",
+          "JS_LITE_ASSETS_PATH": "D:\\GreenSort\\entry\\build\\default\\intermediates\\loader_out_lite\\default",
+          "RES_PATH": "D:\\GreenSort\\entry\\build\\default\\intermediates\\res\\default",
+          "RES_PROFILE_PATH": "D:\\GreenSort\\entry\\build\\default\\intermediates\\res\\default\\resources\\base\\profile",
+          "ETS_SUPER_VISUAL_PATH": "D:\\GreenSort\\entry\\build\\default\\cache\\default\\default@CompileArkTS\\esmodule",
+          "JS_SUPER_VISUAL_PATH": "D:\\GreenSort\\entry\\build\\default\\cache\\default\\default@CompileJS\\jsbundle",
+          "WORKER_LOADER": "D:\\GreenSort\\entry\\build\\default\\intermediates\\loader\\default\\loader.json",
+          "MANIFEST_JSON": "D:\\GreenSort\\entry\\build\\default\\intermediates\\manifest\\default",
+          "OUTPUT_METADATA_JSON": "D:\\GreenSort\\entry\\build\\default\\intermediates\\hap_metadata\\default\\output_metadata.json",
+          "SOURCE_MAP_DIR": "D:\\GreenSort\\entry\\build\\default\\intermediates\\source_map\\default"
+        },
+        "BUILD_OPTION": {
+          "debuggable": true
+        }
+      },
+      "ohosTest": {
+        "SOURCE_ROOT": "D:\\GreenSort\\entry\\src\\ohosTest",
+        "RESOURCES_PATH": [
+          "D:\\GreenSort\\entry\\src\\ohosTest\\resources"
+        ],
+        "BUILD_PATH": {
+          "OUTPUT_PATH": "D:\\GreenSort\\entry\\build\\default\\outputs\\ohosTest",
+          "INTERMEDIA_PATH": "D:\\GreenSort\\entry\\build\\default\\intermediates",
+          "JS_ASSETS_PATH": "D:\\GreenSort\\entry\\build\\default\\intermediates\\loader_out\\ohosTest",
+          "JS_LITE_ASSETS_PATH": "D:\\GreenSort\\entry\\build\\default\\intermediates\\loader_out_lite\\ohosTest",
+          "RES_PATH": "D:\\GreenSort\\entry\\build\\default\\intermediates\\res\\ohosTest",
+          "RES_PROFILE_PATH": "D:\\GreenSort\\entry\\build\\default\\intermediates\\res\\ohosTest\\resources\\base\\profile",
+          "ETS_SUPER_VISUAL_PATH": "D:\\GreenSort\\entry\\build\\default\\cache\\ohosTest\\ohosTest@OhosTestCompileArkTS\\esmodule",
+          "JS_SUPER_VISUAL_PATH": "D:\\GreenSort\\entry\\build\\default\\cache\\ohosTest\\ohosTest@OhosTestCompileJS\\jsbundle",
+          "WORKER_LOADER": "D:\\GreenSort\\entry\\build\\default\\intermediates\\loader\\ohosTest\\loader.json",
+          "MANIFEST_JSON": "D:\\GreenSort\\entry\\build\\default\\intermediates\\manifest\\ohosTest",
+          "OUTPUT_METADATA_JSON": "D:\\GreenSort\\entry\\build\\default\\intermediates\\hap_metadata\\ohosTest\\output_metadata.json",
+          "SOURCE_MAP_DIR": "D:\\GreenSort\\entry\\build\\default\\intermediates\\source_map\\ohosTest"
+        },
+        "BUILD_OPTION": {
+          "debuggable": true
+        }
+      }
+    },
+    "BUILD_OPTION": {
+      "default-default": {
+        "debuggable": true,
+        "copyFrom": "default",
+        "name": "debug"
+      }
+    },
+    "BUILD_PROFILE_OPT": {
+      "apiType": "stageMode",
+      "buildOption": {},
+      "buildOptionSet": [
+        {
+          "name": "release",
+          "arkOptions": {
+            "obfuscation": {
+              "ruleOptions": {
+                "enable": false,
+                "files": [
+                  "./obfuscation-rules.txt"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "name": "default"
+        },
+        {
+          "name": "debug"
+        }
+      ],
+      "targets": [
+        {
+          "name": "default",
+          "runtimeOS": "HarmonyOS"
+        },
+        {
+          "name": "ohosTest",
+          "runtimeOS": "HarmonyOS"
+        }
+      ]
+    },
+    "BUILD_CACHE_DIR": ""
+  },
+  "ohos-project": {
+    "SELECT_PRODUCT_NAME": "default",
+    "MODULE_BUILD_DIR": "D:\\GreenSort\\build",
+    "BUNDLE_NAME": "com.example.sporthealthagent",
+    "VERSION_CODE": 1000000,
+    "VERSION_NAME": "1.0.0",
+    "BUILD_PATH": {
+      "OUTPUT_PATH": "D:\\GreenSort\\build\\outputs\\default"
+    },
+    "MODULES": [
+      {
+        "name": "entry",
+        "srcPath": "D:\\GreenSort\\entry",
+        "targets": [
+          {
+            "name": "default",
+            "applyToProducts": [
+              "default"
+            ]
+          }
+        ],
+        "belongProjectPath": "D:\\GreenSort"
+      }
+    ],
+    "PROFILE_OPT": {
+      "app": {
+        "signingConfigs": [
+          {
+            "name": "default",
+            "type": "HarmonyOS",
+            "material": {
+              "certpath": "C:/Users/lenovo/.ohos/config/default_SportHealthAgent_beQD0KMcPkX0CIzQE2aTTOTGM3GwoDBoZ9M1QKujshA=.cer",
+              "keyAlias": "debugKey",
+              "keyPassword": "0000001B90F0F9ACA8425B8FF1C7A7105DAAD9AD0EF760F9F56F9463510E8564C253369C0F59D52F7474A5",
+              "profile": "C:/Users/lenovo/.ohos/config/default_SportHealthAgent_beQD0KMcPkX0CIzQE2aTTOTGM3GwoDBoZ9M1QKujshA=.p7b",
+              "signAlg": "SHA256withECDSA",
+              "storeFile": "C:/Users/lenovo/.ohos/config/default_SportHealthAgent_beQD0KMcPkX0CIzQE2aTTOTGM3GwoDBoZ9M1QKujshA=.p12",
+              "storePassword": "0000001BEDA606914F4447640C89F2051AA6D7D320264B3A794D80883C8E0BF4417D409295017EEF2B758A"
+            }
+          }
+        ],
+        "products": [
+          {
+            "name": "default",
+            "signingConfig": "default",
+            "compatibleSdkVersion": "5.0.0(12)",
+            "runtimeOS": "HarmonyOS",
+            "targetSdkVersion": "6.1.1(24)"
+          }
+        ],
+        "buildModeSet": [
+          {
+            "name": "debug"
+          },
+          {
+            "name": "release"
+          }
+        ]
+      },
+      "modules": [
+        {
+          "name": "entry",
+          "srcPath": "./entry",
+          "targets": [
+            {
+              "name": "default",
+              "applyToProducts": [
+                "default"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "CONFIG_PROPERTIES": {
+      "enableSignTask": true,
+      "skipNativeIncremental": false,
+      "hvigor.keepDependency": true
+    },
+    "OVERALL_PROJECT_PATHS": [
+      "D:\\GreenSort"
+    ],
+    "BUILD_CACHE_DIR": ""
+  }
+  
